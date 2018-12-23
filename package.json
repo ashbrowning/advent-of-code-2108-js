@@ -1,0 +1,22 @@
+{
+  "name": "advent-of-code-2018",
+  "version": "1.0.0",
+  "description": "Advent of Code 2018 Solutions",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "keywords": [
+    "advent",
+    "of",
+    "code",
+    "javascript"
+  ],
+  "author": "Ash Browning",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^23.6.0",
+    "prettier": "1.15.3"
+  }
+}
