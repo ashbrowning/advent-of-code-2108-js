@@ -2,7 +2,8 @@ const launcher = require("../tools/launcher");
 
 const answers = [
   [522, 73364],
-  [7936, 'lnfqdscwjyteorambzuchrgpx']
+  [7936, 'lnfqdscwjyteorambzuchrgpx'],
+  [110891]
 ];
 
 describe("Advent of Code 2018 JS", () => {

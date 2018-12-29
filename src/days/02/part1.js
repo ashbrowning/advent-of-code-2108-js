@@ -24,7 +24,6 @@ const countDoublesAndTriples = word => {
     two: values.includes(2),
     three: values.includes(3)
   }
-//lnfqdsvwjyteogamnzjwhirkpx
 };
 
 module.exports = solution;
