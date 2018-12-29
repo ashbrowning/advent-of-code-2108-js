@@ -1,7 +1,7 @@
 const fs = require("fs");
 const { differenceInMilliseconds, distanceInWordsStrict, format } = require("date-fns");
 
-module.exports = (dayArg, partArg) => {
+module.exports = (dayArg, partArg, log = true) => {
   const day = !dayArg.length || dayArg.length === 1 ? `0${dayArg}` : `${dayArg}`;
   const solution = require(`../src/days/${day}/index.js`)[`part${partArg}`];
   const input = fs
@@ -13,8 +13,10 @@ module.exports = (dayArg, partArg) => {
   const startTime = new Date();
   const result = solution(input);
   const duration = differenceInMilliseconds(new Date(), startTime);
-  console.log(`Day ${day} Part ${partArg}`);
-  console.log("Answer:", result);
-  console.log("Runtime:", format(duration, 'mm:ss.SSS'));
+  if (log) {
+    console.log(`Day ${day} Part ${partArg}`);
+    console.log("Answer:", result);
+    console.log("Runtime:", format(duration, 'mm:ss.SSS'));
+  }
   return result;
 };
