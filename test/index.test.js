@@ -5,7 +5,8 @@ const answers = [
   [7936, 'lnfqdscwjyteorambzuchrgpx'],
   [110891, 297],
   [115167, 32070],
-  [10598, 5312]
+  [10598, 5312],
+  [4215, ]
 ];
 
 describe("Advent of Code 2018 JS", () => {
