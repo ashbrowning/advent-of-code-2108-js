@@ -1,7 +1,7 @@
 
-const { getManhattenDistance, parse, sortByNearestToCoord } = require('./utils');
+const { getManhattenDistance, sortByNearestToCoord } = require('./utils');
 
-const MAX_DIMENSIONS = 10;
+const MAX_DIMENSIONS = 0;
 const parseRegex = /(\d*), (\d*)/
 
 const solution = input => {
@@ -10,41 +10,41 @@ const solution = input => {
     const [ , xStr, yStr ] = str.match(parseRegex);
     const x = parseInt(xStr);
     const y = parseInt(yStr);
-    if (x > MAX_DIMENSIONS) {
-      MAX_DIMENSIONS = x;
-    }
-    if (y > MAX_DIMENSIONS) {
-      MAX_DIMENSIONS = y;
-    }
+
+    MAX_DIMENSIONS = x > y ? x : y;
+
     return {x, y, id };
   });
 
-
-  // const currentCoord = {x: 0, y: 0};
   const orderedInput = parsedInput.slice();
   sortByNearestToCoord({x: 0, y: 0}, orderedInput);
   const tally = {};
   const grid = [];
-
   for(let y = 0; y < MAX_DIMENSIONS; ++y) {
     const column = [];
+    let skip = 0;
     for(let x = 0; x < MAX_DIMENSIONS; ++x) {
-      sortByNearestToCoord({x, y}, orderedInput);
-      const [closest, secondClosest] = orderedInput;
-      const closestDistance = getManhattenDistance({x, y}, closest);
-      const secondClosestDistance = getManhattenDistance({x, y}, secondClosest);
-      // console.log('difference', closestDistance - secondClosestDistance);
-      if (closestDistance === secondClosestDistance) {
-        column[x] = '';
-      } else {
-        column[x] = closest.id;
-        tally[closest.id] = tally[closest.id] ? tally[closest.id] + 1 : 1;
+      skip -= 1;
+      if (skip <= 0) {
+        sortByNearestToCoord({x, y}, orderedInput);
       }
+      const [closest, secondClosest] = orderedInput;
+
+      if (skip <= 0) {
+        const closestDistance = getManhattenDistance({x, y}, closest);
+        const secondClosestDistance = getManhattenDistance({x, y}, secondClosest);
+        skip = Math.max(Math.floor(((secondClosestDistance - closestDistance) / 2)), 0);
+        if (closestDistance === secondClosestDistance) {
+          column[x] = '';
+          continue;
+        }
+      }
+
+      column[x] = closest.id;
+      tally[closest.id] = tally[closest.id] ? tally[closest.id] + 1 : 1;
     }
     grid.push(column);
   }
-
-  // grid.forEach(g => console.log(g));
 
   //Filter output
   const infiniteSet = new Set();
@@ -55,15 +55,8 @@ const solution = input => {
   grid[0].forEach(e => infiniteSet.add(e));
   grid[grid.length - 1].forEach(e => infiniteSet.add(e));
 
-  const entries = Object.entries(tally);
-  entries.sort((a,b) => b[1] - a[1]);
-  const highest = entries.find(entry => !infiniteSet.has(parseInt(entry[0])));
-
+  const highest = Object.entries(tally).sort((a,b) => b[1] - a[1]).find(entry => !infiniteSet.has(parseInt(entry[0])))
   return highest[1];
 };
 
 module.exports = solution;
-
-
-
-// optimise - distance difference between two closest points, diff/2 -1
