@@ -1,23 +1,13 @@
 
-const { getManhattenDistance, sortByNearestToCoord } = require('./utils');
+const { getManhattenDistance, parse, sortByNearestToCoord } = require('./utils');
 
 const MAX_DIMENSIONS = 0;
 const parseRegex = /(\d*), (\d*)/
 
 const solution = input => {
-  let MAX_DIMENSIONS = 0;
-  const parsedInput = input.map((str, id) => {
-    const [ , xStr, yStr ] = str.match(parseRegex);
-    const x = parseInt(xStr);
-    const y = parseInt(yStr);
+  const { parsedInput, MAX_DIMENSIONS } = parse(input);
 
-    MAX_DIMENSIONS = x > y ? x : y;
-
-    return {x, y, id };
-  });
-
-  const orderedInput = parsedInput.slice();
-  sortByNearestToCoord({x: 0, y: 0}, orderedInput);
+  sortByNearestToCoord({x: 0, y: 0}, parsedInput);
   const tally = {};
   const grid = [];
   for(let y = 0; y < MAX_DIMENSIONS; ++y) {
@@ -26,9 +16,9 @@ const solution = input => {
     for(let x = 0; x < MAX_DIMENSIONS; ++x) {
       skip -= 1;
       if (skip <= 0) {
-        sortByNearestToCoord({x, y}, orderedInput);
+        sortByNearestToCoord({x, y}, parsedInput);
       }
-      const [closest, secondClosest] = orderedInput;
+      const [closest, secondClosest] = parsedInput;
 
       if (skip <= 0) {
         const closestDistance = getManhattenDistance({x, y}, closest);
