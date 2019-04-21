@@ -23,7 +23,7 @@ const solution = input => {
       if (skip <= 0) {
         const closestDistance = getManhattenDistance({x, y}, closest);
         const secondClosestDistance = getManhattenDistance({x, y}, secondClosest);
-        skip = Math.max(Math.floor(((secondClosestDistance - closestDistance) / 2)), 0);
+        skip = Math.max(Math.floor((secondClosestDistance - closestDistance) / 2), 0);
         if (closestDistance === secondClosestDistance) {
           column[x] = '';
           continue;

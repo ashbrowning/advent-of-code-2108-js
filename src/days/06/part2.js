@@ -7,15 +7,13 @@ const isSafe = ({ x, y, coords }) => {
   let totalDistance = 0;
   for( let i = 0; i < coords.length; ++i ) {
     totalDistance += getManhattenDistance({x, y}, coords[i]);
-    if (totalDistance >= MAX_DISTANCE) {
-      return false;
-    }
   }
-  return true;
+  return totalDistance;
 }
 
 const solution = input => {
-  const { parsedInput, MAX_DIMENSIONS } = parse(input);
+  const { parsedInput: coords, MAX_DIMENSIONS } = parse(input);
+  const numberOfCoords = parsedInput.length;
 
   sortByFurthestToCoord({x: 0, y: 0}, parsedInput);
   let safeCoordTotal = 0;
@@ -24,21 +22,13 @@ const solution = input => {
     let skip = 0;
     for(let x = 0; x < MAX_DIMENSIONS; ++x) {
       sortByFurthestToCoord({x, y}, parsedInput);
+      const totalDistance = isSafe({ x, y, coords });
 
-      // const [furthest, secondFurthest] = parsedInput;
-
-      // const furthestDistance = getManhattenDistance({x, y}, furthest);
-
-      safeCoordTotal += isSafe({x, y, coords: parsedInput }) ? 1 : 0;
-
-
-      // const secondFurthestDistance = getManhattenDistance({x, y}, secondFurthest);
-      // skip = Math.max(Math.floor(((furthestDistance - secondFurthestDistance) / 2)), 0);
-      // if (furthestDistance === secondFurthestDistance) {
-      //   column[x] = '';
-      //   continue;
-      // }
-
+      if (totalDistance < MAX_DISTANCE) {
+        safeCoordTotal += 1;
+        continue;
+      }
+      x += Math.max(Math.floor((totalDistance - MAX_DISTANCE) / numberOfCoords), 0);
     }
   }
   return safeCoordTotal;
